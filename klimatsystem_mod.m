@@ -17,7 +17,7 @@ alpha23 = 45/600;
 alpha31 = 45/1500;
 beta = 0.1:0.1:0.8;
 
-NPP=@(B1,beta) 60*(1+beta*log(B1)/600);  %Function
+NPP=@(B1,beta) 60*(1+beta*log(B1/600));  %Function
 dB_1=@(t,B1,B2,B3,beta) alpha31*B3+alpha21*B2-NPP(B1, beta)+U(t);  %Function
 dB_2=@(t,B1,B2,B3,beta) NPP(B1, beta)-alpha23*B2-alpha21*B2;       %Function
 dB_3=@(t,B1,B2,B3,beta)alpha23*B2-alpha31*B3;                %Function     
@@ -207,7 +207,7 @@ beta = 0.1:0.1:0.8;
 
 dt=1;
 
-NPP=@(B1,beta) 60*(1+beta*log(B1)/600);  %Function
+NPP=@(B1,beta) 60*(1+beta*log(B1/600));  %Function
 dB_1=@(t,B1,B2,B3,beta) alpha31*B3+alpha21*B2-NPP(B1, beta)+U(t);  %Function
 dB_2=@(t,B1,B2,B3,beta) NPP(B1, beta)-alpha23*B2-alpha21*B2;       %Function
 dB_3=@(t,B1,B2,B3,beta)alpha23*B2-alpha31*B3;                %Function  
@@ -273,7 +273,7 @@ beta = [0.35/2 0.35 0.7];
 
 dt=1;
 
-NPP=@(B1,beta) 60*(1+beta*log(B1)/600);  %Function
+NPP=@(B1,beta) 60*(1+beta*log(B1/600));  %Function
 dB_1=@(t,B1,B2,B3,beta) alpha31*B3+alpha21*B2-NPP(B1, beta)+U(t);  %Function
 dB_2=@(t,B1,B2,B3,beta) NPP(B1, beta)-alpha23*B2-alpha21*B2;       %Function
 dB_3=@(t,B1,B2,B3,beta)alpha23*B2-alpha31*B3;                %Function  
@@ -382,7 +382,7 @@ beta = 0.35;
 
 dt=1;
 
-NPP=@(B1,beta) 60*(1+beta*log(B1)/600);  %Function
+NPP=@(B1,beta) 60*(1+beta*log(B1/600));  %Function
 dB_1=@(t,B1,B2,B3,beta) alpha31*B3+alpha21*B2-NPP(B1, beta)+U(t);  %Function
 dB_2=@(t,B1,B2,B3,beta) NPP(B1, beta)-alpha23*B2-alpha21*B2;       %Function
 dB_3=@(t,B1,B2,B3,beta)alpha23*B2-alpha31*B3;                %Function  
