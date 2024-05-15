@@ -510,32 +510,79 @@ hold on;
 plot(tspan,RF(CO2ConcRCP45),'LineWidth',2)
 legend("Actual RF", "RF function CO2")
 
-%% Uppgift 10
+%% Uppgift 10a
 
-t=10^4;
+tspan=1:4*10^3;
+lambda = 0.8;
+dt = 1;
+k = 0.5;
+c_1 = (4186 * 50 * 1020)/(60*60*24*365);
+c_2 = (4186 * 2000 * 1020)/(60*60*24*365);
+
 RF=ones(1,length(tspan));
 RF(1)=0;
-dT_1=@(t,T_1,T_2,RF,lambda,k) 1/c_1(RF(t)-T_1(t)/lambda-k*(T_1(t)-T_2(t)));  
-dT_2=@(t,T_1,T_2,RF,lambda,k) 1/c_2(k*(T_1(t)-T_2(t)));
+dT_1=@(t,T_1,T_2,RF,lambda,k) 1/c_1.*(RF-T_1/lambda-k.*(T_1-T_2));  
+dT_2=@(t,T_1,T_2,RF,lambda,k) 1/c_2.*(k.*(T_1-T_2));
 
-T_1=zeros(1,length(U));
-T_2=zeros(1,length(U));
+T_1=zeros(1,length(tspan));
+T_2=zeros(1,length(tspan));
 
-T_1(0) =0; 
-T_2(0) =0; 
+
 
 
 %Euler Forward Method to iteratively fill the B vectors.
-for t=1:(length(U)-1)
-    T_1(1,t + dt) = T_1(t) + dT_1(t, T_1(t), T_2(t),RF,lambda,k)*dt;
-    T_2(1,t + dt) = T_2(t) + dT_2(t, T_1(t), T_2(t),RF,lambda,k)*dt;
+for t=1:(length(tspan)-1)
+    
+    T_1(1,t + dt) = T_1(t) + dT_1(t, T_1(t), T_2(t),RF(t),lambda,k)*dt;
+    T_2(1,t + dt) = T_2(t) + dT_2(t, T_1(t), T_2(t),RF(t),lambda,k)*dt;
 end
 
 
+hold on;
+plot(tspan,T_1,'LineWidth',2)
+plot(tspan,T_2,'LineWidth',2)
 
 
+%% Uppgift 10b
+
+tspan=1:4*10^3;
+lambda = [0.2 0.6 1];
+dt = 1;
+k = [0.5 0.8 1.3];
+c_1 = (4186 * 50 * 1020)/(60*60*24*365);
+c_2 = (4186 * 2000 * 1020)/(60*60*24*365);
+
+RF=ones(1,length(tspan));
+RF(1)=0;
+dT_1=@(t,T_1,T_2,RF,lambda,k) 1/c_1.*(RF-T_1/lambda-k.*(T_1-T_2));  
+dT_2=@(t,T_1,T_2,RF,lambda,k) 1/c_2.*(k.*(T_1-T_2));
+
+T_1=zeros(1,length(tspan));
+T_2=zeros(1,length(tspan));
+
+q = 1;
+for i = k
+
+for j = lambda
+
+%Euler Forward Method to iteratively fill the B vectors.
+for t=1:(length(tspan)-1)
+    
+    T_1(1,t + dt) = T_1(t) + dT_1(t, T_1(t), T_2(t),RF(t),j,i)*dt;
+    T_2(1,t + dt) = T_2(t) + dT_2(t, T_1(t), T_2(t),RF(t),j,i)*dt;
+end
+
+subplot(3,3,q)
+hold on;
+plot(tspan,T_1,'LineWidth',2)
+plot(tspan,T_2,'LineWidth',2)
+plot(tspan, (1-exp(-1)) * j, 'LineWidth',2)
+q = q + 1;
+
+end
 
 
+end
 
 
 
