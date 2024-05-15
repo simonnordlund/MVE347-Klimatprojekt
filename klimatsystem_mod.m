@@ -512,6 +512,27 @@ legend("Actual RF", "RF function CO2")
 
 %% Uppgift 10
 
+t=10^4;
+RF=ones(1,length(tspan));
+RF(1)=0;
+dT_1=@(t,T_1,T_2,RF,lambda,k) 1/c_1(RF(t)-T_1(t)/lambda-k*(T_1(t)-T_2(t)));  
+dT_2=@(t,T_1,T_2,RF,lambda,k) 1/c_2(k*(T_1(t)-T_2(t)));
+
+T_1=zeros(1,length(U));
+T_2=zeros(1,length(U));
+
+T_1(0) =0; 
+T_2(0) =0; 
+
+
+%Euler Forward Method to iteratively fill the B vectors.
+for t=1:(length(U)-1)
+    T_1(1,t + dt) = T_1(t) + dT_1(t, T_1(t), T_2(t),RF,lambda,k)*dt;
+    T_2(1,t + dt) = T_2(t) + dT_2(t, T_1(t), T_2(t),RF,lambda,k)*dt;
+end
+
+
+
 
 
 
